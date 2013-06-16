@@ -33,17 +33,15 @@ void setup(){
 }
 
 void loop(){    
-   
-   //Printing the values in matrix
-   //mymatriz.printChar(numberPrintable.substring(0, 1), 1, false, 0);
-   
-   String distancia = PWM_Mode();
-   //String distancia = "89";
-   //String temperatura = Termistor(0);
+  
+   //String distancia = PWM_Mode();
+   String temperatura = Termistor(17);
+   //String luminosidade = getValueSensorLDR(17);
       
-   printValue(distancia);
-   //printValue(temperatura);
-   
+   //printValue(luminosidade);
+     printValue(temperatura);
+   //printValue(luminosidade);
+     
    delay(1);
 }
 
@@ -103,14 +101,14 @@ void printValue(String valor){
     int countString = sizeof(arrayCharNumbers) - 1;
     valor.toCharArray(arrayCharNumbers, sizeof(arrayCharNumbers)); //put readStringinto an array
     
-    Serial.println('Valores retornados: ');
-    Serial.print('Valor total: ');
-    Serial.println(valor);  //so you can see the captured string 
-    Serial.print('Valor caracter 1: ');
-    Serial.println(valor[0]);
-    Serial.print('Valor caracter 2: ');
-    Serial.println(valor[1]);
-    Serial.println('------------------------------');
+    //Serial.println('Valores retornados: ');
+    //Serial.print('Valor total: ');
+    //Serial.println(valor);  //so you can see the captured string 
+    //Serial.print('Valor caracter 1: ');
+    //Serial.println(valor[0]);
+    //Serial.print('Valor caracter 2: ');
+    //Serial.println(valor[1]);
+    //Serial.println('------------------------------');
   
    if( countString < 3 )
    {
@@ -123,12 +121,15 @@ void printValue(String valor){
       }
    }else{
       mymatriz.printChar('X', 1, false, 0);
-      Serial.println("Distancia maior que 99 cm.");
+      //Serial.println("Distancia maior que 99 cm.");
    }
 }
 
 String Termistor (int RawADC)
 {
+  String value = String(analogRead(17));
+  Serial.print(value); // Exibe temperatura em Celsius
+  
   int Temp;
   Temp = log(((10240000/RawADC) - 10000)); // Considerando resistência de 10K
   Temp = 1 / (0.001129148 + (0.000234125 + (0.0000000876741 * Temp * Temp ))* Temp ); 
@@ -146,4 +147,10 @@ String Termistor (int RawADC)
   return numberPrintable;
 }
 
-
+String getValueSensorLDR(int numeroPino)
+{
+  String value = String(analogRead(numeroPino));
+  Serial.print(value); // Exibe temperatura em Celsius 
+  Serial.println (" luminosidade");
+  return value;
+}
