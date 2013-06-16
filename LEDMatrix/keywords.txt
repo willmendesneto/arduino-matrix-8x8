@@ -1,0 +1,25 @@
+#######################################
+# Syntax Coloring Map For Buttons
+#######################################
+
+#######################################
+# Datatypes (KEYWORD1)
+#######################################
+
+LEDMatrix	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+
+begin	KEYWORD2
+setDot	KEYWORD2
+printChar	KEYWORD2
+printCustomChar	KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+
+L	LITERAL1
+C	LITERAL1
