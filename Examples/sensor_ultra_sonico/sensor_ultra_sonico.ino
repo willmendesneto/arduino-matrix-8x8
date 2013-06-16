@@ -12,8 +12,8 @@
 // #       SENSOR ULTRA-SONICO  -> ARDUINO
 // #       Pin 1 VCC (URM V3.2) -> VCC (Arduino)
 // #       Pin 2 GND (URM V3.2) -> GND (Arduino)
-// #       Pin 4 PWM (URM V3.2) -> Pin 0 (Arduino)
-// #       Pin 6 COMP/TRIG (URM V3.2) -> Pin 1 (Arduino)
+// #       Pin 4 PWM (URM V3.2) -> Pin 3 (Arduino)
+// #       Pin 6 COMP/TRIG (URM V3.2) -> Pin 5 (Arduino)
 // #
 int URPWM = 3; // PWM Output 0－25000US，Every 50US represent 1cm
 int URTRIG = 5; // PWM trigger pin

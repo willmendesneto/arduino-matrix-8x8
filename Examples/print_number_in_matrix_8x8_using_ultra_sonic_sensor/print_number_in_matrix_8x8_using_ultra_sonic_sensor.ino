@@ -15,14 +15,13 @@
 // #       Pin 4 PWM (URM V3.2) -> Pin 3 (Arduino)
 // #       Pin 6 COMP/TRIG (URM V3.2) -> Pin 5 (Arduino)
 // #
-int URPWM = 7; // PWM Output 0－25000US，Every 50US represent 1cm
-int URTRIG = 11; // PWM trigger pin
+int URPWM = 3; // PWM Output 0－25000US，Every 50US represent 1cm
+int URTRIG = 5; // PWM trigger pin
+
+uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 
 unsigned int distance = 0;
-// distance measure command
-                        // D,   2,    ?,   1
-uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};   
-//uint8_t EnPwmCmd[4] = {0x46, 0x02, 0xbb, 0x01};  
+
 //  Instance the constructor
 LEDMatrix mymatriz('C');
 
@@ -38,14 +37,14 @@ void loop(){
    //Printing the values in matrix
    //mymatriz.printChar(numberPrintable.substring(0, 1), 1, false, 0);
    
-   //String distancia = PWM_Mode();
-   String distancia = "10";
+   String distancia = PWM_Mode();
+   //String distancia = "89";
    //String temperatura = Termistor(0);
       
    printValue(distancia);
    //printValue(temperatura);
    
-   delay(10);
+   delay(1);
 }
 
 /**
@@ -62,7 +61,6 @@ void PWM_Mode_Setup(){
 
   
   for(int i=0; i<4; i++){
-      Serial.println("Up!");
       Serial.write(EnPwmCmd[i]);
   }
   
@@ -78,7 +76,7 @@ String PWM_Mode(){
 
   unsigned long DistanceMeasured = pulseIn(URPWM, LOW);
 
-  if(DistanceMeasured >= 50000){              // the reading is invalid.
+  if(DistanceMeasured == 50000){              // the reading is invalid.
     Serial.print("Distancia invalida!");
     distance = 0;
   } else {
@@ -125,6 +123,7 @@ void printValue(String valor){
       }
    }else{
       mymatriz.printChar('X', 1, false, 0);
+      Serial.println("Distancia maior que 99 cm.");
    }
 }
 
