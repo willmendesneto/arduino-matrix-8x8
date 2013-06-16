@@ -21,6 +21,15 @@ Thermistor temp(17);
 int URPWM = 3; // PWM Output 0－25000US，Every 50US represent 1cm
 int URTRIG = 5; // PWM trigger pin
 
+/**
+ *  
+ *   1 => ULTRA_SONIC
+ *   2 => TEMPERATURE
+ *   3 => LUMINOSITY
+ *   4 => INFRA_RED
+ *   default => "99"
+ */
+const int sensor = 5;
 uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 
 unsigned int distance = 0;
@@ -35,15 +44,54 @@ void setup(){
     //mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7);
 }
 
-void loop(){    
+void loop(){
+        if (sensor == 1) {
+            String distancia = PWM_Mode();
+            printValue(distancia);    
+        } else if( sensor ==  2 ) {
+            String temperatura = Termistor(17);
+            printValue(temperatura);
+        } else if(sensor ==  3 ) {
+            String luminosidade = getValueSensorLDR(17);
+            printValue(luminosidade);
+        } else if(sensor ==  4 ) {
+            /*   INSERT THE CODE HERE...   */
+        } else {
+            mymatriz.printChar('4', 1, false, 4);
+            mymatriz.printChar('4', 1, false, 0);
+        }
   
+    /*
+    switch (sensor == 1
+            String distancia = PWM_Mode();
+            printValue(distancia);            
+            break;
+        case 2:
+            String temperatura = Termistor(17);
+            printValue(temperatura);
+            break;
+        case 3:
+            String luminosidade = getValueSensorLDR(17);
+            printValue(luminosidade);
+            break;
+        case 4:
+            /*   INSERT THE CODE HERE...   */
+            /*
+            break;
+        default:
+            mymatriz.printChar('4', 1, false, 4);
+            mymatriz.printChar('4', 1, false, 0);
+            break;
+    }
+    */
    //String distancia = PWM_Mode();
-   String temperatura = Termistor(17);
+   //String temperatura = Termistor(17);
    //String luminosidade = getValueSensorLDR(17);
       
    //printValue(luminosidade);
-     printValue(temperatura);
+   // printValue(temperatura);
    //printValue(luminosidade);
+     
      
    delay(1);
 }
