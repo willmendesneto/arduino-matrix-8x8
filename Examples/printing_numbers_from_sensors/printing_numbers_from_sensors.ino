@@ -10,7 +10,6 @@
 
 Thermistor temp(17);
 
-
 // # Connection:
 // #       SENSOR ULTRA-SONICO  -> ARDUINO
 // #       Pin 1 VCC (URM V3.2) -> VCC (Arduino)
@@ -20,6 +19,18 @@ Thermistor temp(17);
 // #
 int URPWM = 3; // PWM Output 0－25000US，Every 50US represent 1cm
 int URTRIG = 5; // PWM trigger pin
+
+/**
+ *  INTEGER USED FOR SENSOR VERIFICATION
+ *  Options:
+ *
+ *   1 => ULTRA_SONIC
+ *   2 => TEMPERATURE
+ *   3 => LUMINOSITY
+ *   4 => INFRA_RED
+ *   default => "99"
+ */
+const int sensor = 1;
 
 uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 
@@ -32,18 +43,24 @@ void setup(){
     Serial.begin(9600);
     PWM_Mode_Setup();
     mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 19, 4, 18, 6, 7);
-    //mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 3, 4, 5, 6, 7);
 }
 
-void loop(){    
-  
-   //String distancia = PWM_Mode();
-   String temperatura = Termistor(17);
-   //String luminosidade = getValueSensorLDR(17);
-      
-   //printValue(luminosidade);
-     printValue(temperatura);
-   //printValue(luminosidade);
+void loop(){
+    if (sensor == 1) {          //  1 => ULTRA_SONIC
+        String distancia = PWM_Mode();
+        printValue(distancia);    
+    } else if( sensor ==  2 ) { //  2 => TEMPERATURE
+        String temperatura = Termistor(17);
+        printValue(temperatura);
+    } else if(sensor ==  3 ) {  //  3 => LUMINOSITY
+        String luminosidade = getValueSensorLDR(17);
+        printValue(luminosidade);
+    } else if(sensor ==  4 ) {  //  4 => INFRA_RED
+        /*   INSERT THE CODE HERE...   */
+    } else {                    //  DEFAULT VALUE
+        mymatriz.printChar('4', 1, false, 4);
+        mymatriz.printChar('4', 1, false, 0);
+    }
      
    delay(1);
 }
@@ -60,7 +77,6 @@ void PWM_Mode_Setup(){
 
   pinMode(URPWM, INPUT);                      // Sending Enable PWM mode command
 
-  
   for(int i=0; i<4; i++){
       Serial.write(EnPwmCmd[i]);
   }
@@ -103,29 +119,19 @@ void printValue(String valor){
     char arrayCharNumbers[valor.length() + 1]; //determine size of the array
     int countString = sizeof(arrayCharNumbers) - 1;
     valor.toCharArray(arrayCharNumbers, sizeof(arrayCharNumbers)); //put readStringinto an array
-    
-    //Serial.println('Valores retornados: ');
-    //Serial.print('Valor total: ');
-    //Serial.println(valor);  //so you can see the captured string 
-    //Serial.print('Valor caracter 1: ');
-    //Serial.println(valor[0]);
-    //Serial.print('Valor caracter 2: ');
-    //Serial.println(valor[1]);
-    //Serial.println('------------------------------');
-  
-   if( countString < 3 )
-   {
-      if( countString > 1) {          
-          mymatriz.printChar(valor[0], 1, false, 4);
-          mymatriz.printChar(valor[1], 1, false, 0);
-      }else{
-          mymatriz.printChar(valor[0], 1, false, 0);
-          mymatriz.printChar('0', 1, false, 4);
-      }
-   }else{
-      mymatriz.printChar('X', 1, false, 0);
-      //Serial.println("Distancia maior que 99 cm.");
-   }
+          
+    if( countString < 3 )
+    {
+       if( countString > 1) {          
+           mymatriz.printChar(valor[0], 1, false, 4);
+           mymatriz.printChar(valor[1], 1, false, 0);
+       }else{
+           mymatriz.printChar(valor[0], 1, false, 0);
+           mymatriz.printChar('0', 1, false, 4);
+       }
+    }else{
+       mymatriz.printChar('X', 1, false, 0);
+    }
 }
 
 String Termistor (int RawADC)
