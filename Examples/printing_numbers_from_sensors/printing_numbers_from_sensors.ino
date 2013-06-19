@@ -42,10 +42,9 @@ int URTRIG = 5; // PWM trigger pin
  *   1 => ULTRA_SONIC
  *   2 => TEMPERATURE
  *   3 => LUMINOSITY
- *   4 => INFRA_RED
  *   default => "99"
  */
-const int sensor = 4;
+const int sensor = 2;
 
 uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 
@@ -56,8 +55,10 @@ LEDMatrix mymatriz('C');
 
 void setup(){
     Serial.begin(9600);
-    //PWM_Mode_Setup();
-    //mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 19, 4, 18, 6, 7);
+    
+    if (sensor == 1) {          //  1 => ULTRA_SONIC
+      PWM_Mode_Setup();
+    } 
     mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 19, 4, 18, 6, 7);
     irrecv.enableIRIn(); // Start the receiver
 }
@@ -72,10 +73,6 @@ void loop(){
     } else if(sensor ==  3 ) {  //  3 => LUMINOSITY
         String luminosidade = getValueSensorLDR(17);
         printValue(luminosidade);
-    } else if(sensor ==  4 ) {  //  4 => INFRA_RED
-        /*   INSERT THE CODE HERE...   */
-        Serial.println("INFRA RED");
-        printValue(getValueSensorInfraRed());
     } else {                    //  DEFAULT VALUE
         mymatriz.printChar('4', 1, false, 4);
         mymatriz.printChar('4', 1, false, 0);
