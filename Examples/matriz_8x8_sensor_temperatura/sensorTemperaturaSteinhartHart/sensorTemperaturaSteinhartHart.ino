@@ -1,6 +1,6 @@
 #include <Thermistor.h>
 
-Thermistor temp(0);
+Thermistor temp(17);
 
 void setup() {
   Serial.begin(9600);

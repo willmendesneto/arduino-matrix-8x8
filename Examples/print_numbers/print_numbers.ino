@@ -14,8 +14,8 @@ void loop(){
     
     for(int i = 0; i < 10; i++) {    
       for(int j = 0; j < 10; j++) {
-        mymatriz.printChar( numbers[j], 2, false, 0);
-        mymatriz.printChar( numbers[i], 2, false, 4);
+        mymatriz.printChar( numbers[j], 5, false, 0);
+        mymatriz.printChar( numbers[i], 5, false, 4);
         delay(100);
       }
     }

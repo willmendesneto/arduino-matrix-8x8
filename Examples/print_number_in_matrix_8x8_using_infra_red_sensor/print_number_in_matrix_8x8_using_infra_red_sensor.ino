@@ -23,7 +23,7 @@ LEDMatrix mymatriz('C');
 void setup(){
     Serial.begin(9600);
     
-    mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 0, 1, 2, 19, 4, 18, 6, 7);
+    mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 17, 13, 2, 19, 4, 18, 6, 7);
     irrecv.enableIRIn(); // Start the receiver
 }
 

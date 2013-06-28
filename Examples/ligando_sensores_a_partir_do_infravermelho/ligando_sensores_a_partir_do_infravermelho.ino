@@ -21,7 +21,6 @@ decode_results results;
  */
 Thermistor temp(A3);
 
-
 /**
  *  GLOBAL PARAMETERS ULTRA-SONIC
  */
@@ -44,7 +43,7 @@ int URTRIG = 5; // PWM trigger pin
  *   3 => LUMINOSITY
  *   default => "99"
  */
-const int sensor = 2;
+const int sensor = 3;
 
 uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 

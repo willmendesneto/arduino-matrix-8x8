@@ -6,20 +6,7 @@
 
 #include <font.h>
 #include <LEDMatrix.h>
-#include <Thermistor.h>
-#include <IRremote.h>
 
-/**
- *  GLOBAL PARAMETERS INFRA RED
- */
-int RECV_PIN = 5;
-IRrecv irrecv(RECV_PIN);
-decode_results results;
-
-/**
- *  GLOBAL PARAMETERS TEMPERATURE
- */
-Thermistor temp(A3);
 
 
 /**
@@ -44,7 +31,7 @@ int URTRIG = 5; // PWM trigger pin
  *   3 => LUMINOSITY
  *   default => "99"
  */
-const int sensor = 2;
+const int sensor = 1;
 
 uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 
@@ -60,23 +47,12 @@ void setup(){
       PWM_Mode_Setup();
     } 
     mymatriz.begin(8, 9, 10, 11, 12, 14, 15, 16, 17, 13, 2, 19, 4, 18, 6, 7);
-    irrecv.enableIRIn(); // Start the receiver
 }
 
 void loop(){
-   if (sensor == 1) {          //  1 => ULTRA_SONIC
+  
         String distancia = PWM_Mode();
-        printValue(distancia);    
-   } else if( sensor ==  2 ) { //  2 => TEMPERATURE
-        String temperatura = Termistor(17);
-        printValue(temperatura);
-    } else if(sensor ==  3 ) {  //  3 => LUMINOSITY
-        String luminosidade = getValueSensorLDR(17);
-        printValue(luminosidade);
-    } else {                    //  DEFAULT VALUE
-        mymatriz.printChar('4', 1, false, 4);
-        mymatriz.printChar('4', 1, false, 0);
-    }
+        printValue(distancia);  
      
    delay(1);
 }
@@ -117,12 +93,13 @@ String PWM_Mode(){
   }
     
   String numberPrintable = String(distance);
-    
+    /*
   //  Printing values in serial
   Serial.print("Distance Measured: ");
   Serial.println(DistanceMeasured);
   Serial.print("Distance (cm): ");
   Serial.println(distance);
+  */
   Serial.print("Number returned: ");
   Serial.println(numberPrintable);
     
@@ -150,60 +127,3 @@ void printValue(String valor){
     }
 }
 
-String Termistor (int RawADC)
-{
-  int valor = temp.getTemp();
-  String temperature = String(valor);
-  Serial.print("Temperatura no Sensor eh: ");
-  Serial.print(temperature);
-  Serial.println("*C");
-  
-  return temperature;
-}
-
-String getValueSensorLDR(int numeroPino)
-{
-  String value = String(analogRead(numeroPino));
-  Serial.print(value); 
-  Serial.println (" luminosidade");
-  return value;
-}
-
-String getValueSensorInfraRed() {
-  if (irrecv.decode(&results)) {
-    String stringOne =  String(results.value, HEX);   
-    if( stringOne == "910"){
-      Serial.println('0');
-      return "0";
-    }else if ( stringOne == "10"){
-      Serial.println('1');
-      return "1";
-    }else if ( stringOne == "810"){
-      Serial.println('2');
-      return "2";
-    }else if ( stringOne == "410"){
-      Serial.println('3');
-      return "3";
-    }else if ( stringOne == "c10"){
-      Serial.println('4');
-      return "4";
-    }else if ( stringOne == "210"){
-      Serial.println('5');
-      return "5";
-    }else if ( stringOne == "a10"){
-      Serial.println('6');
-      return "6";
-    }else if ( stringOne == "610"){
-      Serial.println('7');
-      return "7";
-    }else if ( stringOne == "e10"){
-      Serial.println('8');
-      return "8";
-    }else if ( stringOne == "110"){
-      Serial.println('9');
-      return "9";
-    }
-    
-    irrecv.resume(); // Receive the next value
-  }
-}
