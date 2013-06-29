@@ -10,14 +10,14 @@
 #include "Arduino.h"
 
 LEDMatrix::LEDMatrix(bool mode){
-if(mode){
-Mode = 1;
-}else{
-Mode = 0;
-}
+	if(mode){
+		Mode = 1;
+	}else{
+		Mode = 0;
+	}
 }
 
-void LEDMatrix::begin(short int C1,short int C2,short int C3,short int C4,short int C5,short int C6,short int L1,short int L2,short int L3,short int L4,short int L5){
+void LEDMatrix::begin(short int C1,short int C2,short int C3,short int C4,short int C5,short int C6, short int L1,short int L2,short int L3,short int L4,short int L5,short int L6){
 colunas[0] = C1;
 colunas[1] = C2;
 colunas[2] = C3;
@@ -29,12 +29,13 @@ linhas[1] = L2;
 linhas[2] = L3;
 linhas[3] = L4;
 linhas[4] = L5;
+linhas[5] = L6;
 
 for(short i=0; i<6;i++){
   pinMode(colunas[i], OUTPUT);
 }
 
-for(short i=0; i<5;i++){
+for(short i=0; i<6;i++){
   pinMode(linhas[i], OUTPUT);
 }
 }
@@ -46,7 +47,7 @@ for(int i=1;i<=6;i++){
     else digitalWrite(colunas[i-1], HIGH);
   }
 
-  for(int i=1; i<=5;i++){
+  for(int i=1; i<=6;i++){
    if(i==row) digitalWrite(linhas[i-1], HIGH);
   else digitalWrite(linhas[i-1], LOW);
   }
@@ -56,7 +57,7 @@ for(int i=1;i<=6;i++){
     else digitalWrite(colunas[i-1], LOW);
   }
 
-  for(int i=1; i<=5;i++){
+  for(int i=1; i<=6;i++){
    if(i==row) digitalWrite(linhas[i-1], LOW);
   else digitalWrite(linhas[i-1], HIGH);
   }
@@ -67,7 +68,7 @@ void LEDMatrix::printChar(short int caracter, short int duration, bool invert, s
 int cnt = 0;
 short num_col;
   while(cnt < duration){
-  for(int i=0; i<5; i++){
+  for(int i=0; i<6; i++){
    for(int j=0; j<6; j++){
 
 	num_col = (j+1) + shift;
@@ -87,7 +88,7 @@ void LEDMatrix::printCustomChar(unsigned char *caracter, short int duration, boo
 int cnt = 0;
 short num_col;
   while(cnt < duration){
-  for(int i=0; i<5; i++){
+  for(int i=0; i<6; i++){
    for(int j=0; j<6; j++){
 
 	num_col = (j+1) + shift;

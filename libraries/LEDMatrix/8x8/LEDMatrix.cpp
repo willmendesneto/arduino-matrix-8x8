@@ -1,6 +1,6 @@
 /*
  *  LEDMatrix.cpp
- *  Biblioteca para exibição de caracter em uma Mtriz de leds.
+ *  Biblioteca para exibi??o de caracter em uma Mtriz de leds.
  *  Criado por Tiago H. Melo em 06/03/13.
  *  Licensed under LGPL (free to modify and use as you wish)
  */
@@ -50,39 +50,39 @@ for(int i=1;i<=8;i++){
     if(i==col) digitalWrite(colunas[i-1], !onOff);
     else digitalWrite(colunas[i-1], HIGH);
   }
-  
+
   for(int i=1; i<=8;i++){
    if(i==row) digitalWrite(linhas[i-1], HIGH);
-  else digitalWrite(linhas[i-1], LOW); 
+  else digitalWrite(linhas[i-1], LOW);
   }
 }else{
 for(int i=1;i<=8;i++){
     if(i==col) digitalWrite(colunas[i-1], onOff);
     else digitalWrite(colunas[i-1], LOW);
   }
-  
+
   for(int i=1; i<=8;i++){
    if(i==row) digitalWrite(linhas[i-1], LOW);
-  else digitalWrite(linhas[i-1], HIGH); 
+  else digitalWrite(linhas[i-1], HIGH);
   }
 }
 }
 
 void LEDMatrix::printChar(short int caracter, short int duration, bool invert, short int shift){
 int cnt = 0;
-short num_col;	
+short num_col;
   while(cnt < duration){
   for(int i=0; i<8; i++){
    for(int j=0; j<8; j++){
-    
+
 	num_col = (j+1) + shift;
 	if(num_col>8) num_col = num_col - 8;
-	
+
 	if(!invert) setDot(num_col, i+1, (Font[caracter][6 - i]>>(4 - j))&0x01);
     else	setDot(num_col, i+1, !((Font[caracter][6 - i]>>(4 - j))&0x01));
-	
+
 	delay(1);
-   } 
+   }
   }
   cnt++;
   }
@@ -94,15 +94,15 @@ short num_col;
   while(cnt < duration){
   for(int i=0; i<8; i++){
    for(int j=0; j<8; j++){
-    
+
 	num_col = (j+1) + shift;
 	if(num_col>8) num_col = num_col - 8;
-	
+
 	if(!invert) setDot(j+1, i+1, (caracter[6-i]>>(4-j))&0x01);
 	else setDot(j+1, i+1, !((caracter[6-i]>>(4-j))&0x01));
-	
+
 	delay(1);
-   } 
+   }
   }
   cnt++;
   }
