@@ -1,6 +1,12 @@
 #include <font.h>
 #include <LEDMatrix.h>
 #include <Thermistor.h>
+#include <IRremote.h>
+
+// usado para definir pino para o sensor infravermelho
+int RECV_PIN = 19;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
 
 
 //  usado para definir os pinos usados no sensor ultrasonico
@@ -27,22 +33,96 @@ LEDMatrix mymatriz('C');
 void setup(){
     Serial.begin(9600);
     
+    //  Chamando funcao usada para o sensor infravermelho
+    pinMode(2, OUTPUT); // 5v do InfraRed.
+    digitalWrite(2, HIGH);  // 5v do InfraRed.
+    analogWrite(18, 0); // GND do InfraRed.
+    
+    irrecv.enableIRIn(); // Start the receiver
+    
     //  Chamando funcao usada para o sensor ultrasonico
     PWM_Mode_Setup();
+     
     
     //  Inicializa a matriz de led
     mymatriz.begin(10, 11, 12, 13, 14, 15, 4, 6, 7, 8, 9);
 }
 
-void loop(){    
+void loop(){ 
   
+  /**
+   * Ao apertar o controle, o programa vai responder da seguinte forma:
+   *   Se clicar "1", vai ser habilitado o sensor ultrasonico
+   *   Se clicar "2", vai ser habilitado o sensor de temperatura
+   *   Se clicar "3", vai ser habilitado o sensor de luminosidade
+   *   
+   *   Senao sera impresso o numero que foi clicado 
+   */
+  if (irrecv.decode(&results)) {
+    String stringOne =  String(results.value, HEX);   
+    if( stringOne == "910"){
+      Serial.println('0');
+      printValue("0");
+    }else if ( stringOne == "10"){
+      Serial.println('1');
+      
+      //  SENSOR ULTRASONICO
+      //String distance = PWM_Mode();
+      //printValue(distance);    
+        
+    }else if ( stringOne == "e13dda28"){
+      Serial.println('2');
+      
+      //  SENSOR ULTRASONICO
+      String distance = PWM_Mode();
+      printValue(distance); 
+      
+      //  SENSOR TEMPERATURA
+      //String temperatura = Termistor();
+      //printValue(temperatura);
+      
+    }else if ( stringOne == "410"){
+      Serial.println('3');
+      
+      //  SENSOR LUMINOSIDADE
+      String luminosidade = getValueSensorLDR(16);
+      printValue(luminosidade);
+      
+    }else if ( stringOne == "c10"){
+      Serial.println('4');
+      printValue("4");
+    }else if ( stringOne == "210"){
+      Serial.println('5');
+      printValue("5");
+    }else if ( stringOne == "a10"){
+      Serial.println('6');
+      printValue("6");
+    }else if ( stringOne == "610"){
+      Serial.println('7');
+      printValue("7");
+    }else if ( stringOne == "e10"){
+      Serial.println('8');
+      printValue("8");
+    }else if ( stringOne == "110"){
+      Serial.println('9');
+      printValue("9");
+    }
+    
+    irrecv.resume(); // Receive the next value
+  }  
+     
+  delay(50);
+  
+  
+        //  SENSOR ULTRASONICO
         //String distance = PWM_Mode();
         //printValue(distance);    
         
+        //  SENSOR TEMPERATURA
         //String temperatura = Termistor();
         //printValue(temperatura);
         
-        
+        //  SENSOR LUMINOSIDADE
         //String luminosidade = getValueSensorLDR(16);
         //printValue(luminosidade);
 }
