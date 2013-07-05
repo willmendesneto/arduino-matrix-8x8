@@ -27,6 +27,8 @@ uint8_t EnPwmCmd[4] = {0x44, 0x02, 0xbb, 0x01};    // distance measure command
 //  funcao para passar valor inicial para o sensor ultrasonico
 unsigned int distance = 0;
 
+//String stringOne;
+
 // usado para imprimir na matriz
 LEDMatrix mymatriz('C');
 
@@ -67,8 +69,8 @@ void loop(){
       Serial.println('1');
       
       //  SENSOR ULTRASONICO
-      //String distance = PWM_Mode();
-      //printValue(distance);    
+      String distance = PWM_Mode();
+      printValue(distance);    
         
     }else if ( stringOne == "e13dda28"){
       Serial.println('2');
@@ -78,8 +80,8 @@ void loop(){
       printValue(distance); 
       
       //  SENSOR TEMPERATURA
-      //String temperatura = Termistor();
-      //printValue(temperatura);
+      String temperatura = Termistor();
+      printValue(temperatura);
       
     }else if ( stringOne == "410"){
       Serial.println('3');
@@ -111,7 +113,7 @@ void loop(){
     irrecv.resume(); // Receive the next value
   }  
      
-  delay(50);
+  delay(10);
   
   
         //  SENSOR ULTRASONICO
